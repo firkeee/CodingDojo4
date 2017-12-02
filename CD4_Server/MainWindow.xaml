@@ -6,7 +6,42 @@
         xmlns:local="clr-namespace:CD4_Server"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
+       
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="5" Height="50">
+            <Button Height="25" Width="50" Content="Start" Margin="5"/>
+            <Button Height="25" Width="50" Content="Stop" Margin="5"/>
+        </StackPanel>
+        <TabControl Grid.Row="1">
+            <TabItem Header="Chat" Height="20">
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Vertical" Width="200" HorizontalAlignment="Left" Margin="5">
+                    <Label Content="Connected Users:" Height="30" VerticalAlignment="Bottom" VerticalContentAlignment="Bottom"/>
+                        <DataGrid Height="170" Margin="5">
+
+                        </DataGrid>
+                        <Button Content="Drop" Width="50" HorizontalAlignment="Right" Margin="0,0,5,0"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Width="250" HorizontalAlignment="Left" Margin="5">
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Received Messages:" Height="30" VerticalAlignment="Bottom" VerticalContentAlignment="Bottom"/>
+                            <Label Content="3" Height="30" VerticalAlignment="Bottom" VerticalContentAlignment="Bottom"/>
+                        </StackPanel>
+                        <DataGrid Height="170" Margin="5">
+
+                        </DataGrid>
+                        <Button Content="Save to log" Margin="5,0,5,0"/>
+                    </StackPanel>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Log" Height="20">
+
+            </TabItem>
+        </TabControl>
     </Grid>
+    
 </Window>

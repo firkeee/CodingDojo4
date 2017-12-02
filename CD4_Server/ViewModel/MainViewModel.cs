@@ -1,4 +1,7 @@
+using CD4_Server.Communication;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
+using System.Collections.ObjectModel;
 
 namespace CD4_Server.ViewModel
 {
@@ -16,19 +19,28 @@ namespace CD4_Server.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        /// <summary>
-        /// Initializes a new instance of the MainViewModel class.
-        /// </summary>
+        private Server server;
+        private bool isConnected = false;
+        public ObservableCollection<string> Users { get; set; }
+        public ObservableCollection<string> Messages { get; set; }
+        public RelayCommand StartBtnClickedCommand { get; set; }
+        public RelayCommand StopBtnClickedCommand { get; set; }
+        public RelayCommand DropBtnClickedCommand { get; set; }
+        public RelayCommand SaveToLogBtnClickedCommand { get; set; }
         public MainViewModel()
         {
-            ////if (IsInDesignMode)
-            ////{
-            ////    // Code runs in Blend --> create design time data.
-            ////}
-            ////else
-            ////{
-            ////    // Code runs "for real"
-            ////}
+            
+            Messages = new ObservableCollection<string>();
+            Users = new ObservableCollection<string>();
+
+            StartBtnClickedCommand = new RelayCommand(
+                () =>
+                {
+                    server = new Server();
+                    server.StartAccepting();
+                    isConnected = true;
+                },
+                () => { return !isConnected; });
         }
     }
 }
