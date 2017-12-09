@@ -21,8 +21,14 @@ namespace CD4_Server.ViewModel
     {
         private Server server;
         private bool isConnected = false;
+        public string SelectedUser { get; set; }
+        public int NumberOfRecMessages
+        {
+            get { return Messages.Count; }
+        }
         public ObservableCollection<string> Users { get; set; }
         public ObservableCollection<string> Messages { get; set; }
+
         public RelayCommand StartBtnClickedCommand { get; set; }
         public RelayCommand StopBtnClickedCommand { get; set; }
         public RelayCommand DropBtnClickedCommand { get; set; }
@@ -36,11 +42,42 @@ namespace CD4_Server.ViewModel
             StartBtnClickedCommand = new RelayCommand(
                 () =>
                 {
-                    server = new Server();
+                    server = new Server(UpdateGUIWithNewMessage);
                     server.StartAccepting();
                     isConnected = true;
                 },
                 () => { return !isConnected; });
+
+            StopBtnClickedCommand = new RelayCommand(
+                () =>
+                {
+                    server.StopAccepting();
+                    isConnected = false;
+                },
+                () => { return isConnected; });
+
+            DropBtnClickedCommand = new RelayCommand(
+                () =>
+                {
+                    server.DisconnectClient(SelectedUser);
+                    Users.Remove(SelectedUser);
+                },
+                () => { return (SelectedUser != null); });
+        }
+
+        public void UpdateGUIWithNewMessage(string message)
+        {
+            App.Current.Dispatcher.Invoke(() =>
+                {
+                    string name = message.Split(':')[0];
+                    if (!Users.Contains(name))
+                    {
+                        Users.Add(name);
+                    }
+                    Messages.Add(message);
+
+                    RaisePropertyChanged("NumberOfRecMessages");
+                });
         }
     }
 }

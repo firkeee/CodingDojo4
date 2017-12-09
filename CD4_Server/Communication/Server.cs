@@ -14,9 +14,11 @@ namespace CD4_Server.Communication
         Socket serverSocket;
         List<ClientHandler> clients = new List<ClientHandler>();
         Thread acceptingThread;
+        Action<string> GUIUpdater;
 
-        public Server()
+        public Server(Action<string> guiUpdater)
         {
+            GUIUpdater = guiUpdater;
             serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             serverSocket.Bind(new IPEndPoint(IPAddress.Loopback, 9090));
             serverSocket.Listen(10);
@@ -32,7 +34,7 @@ namespace CD4_Server.Communication
         {
             while (acceptingThread.IsAlive)
             {
-                clients.Add(new ClientHandler(serverSocket.Accept, new Action<string, Socket>(NewMessageReceived)));
+                clients.Add(new ClientHandler(serverSocket.Accept(), new Action<string, Socket>(NewMessageReceived)));
             }
         }
         public void StopAccepting()
@@ -61,7 +63,7 @@ namespace CD4_Server.Communication
         private void NewMessageReceived(string message, Socket senderSocket)
         {
             //update gui
-            //GuiUpdater(message);
+            GUIUpdater(message);
             //write message to all clients
             foreach (var item in clients)
             {

@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CD4_Server"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="360" Width="525"
+        DataContext="{Binding Main, Mode=OneWay, Source={StaticResource Locator}}">
        
     <Grid>
         <Grid.RowDefinitions>
@@ -13,27 +14,23 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="5" Height="50">
-            <Button Height="25" Width="50" Content="Start" Margin="5"/>
-            <Button Height="25" Width="50" Content="Stop" Margin="5"/>
+            <Button Height="25" Width="50" Content="Start" Margin="5" Command="{Binding StartBtnClickedCommand}"/>
+            <Button Height="25" Width="50" Content="Stop" Margin="5" Command="{Binding StopBtnClickedCommand}"/>
         </StackPanel>
         <TabControl Grid.Row="1">
             <TabItem Header="Chat" Height="20">
                 <StackPanel Orientation="Horizontal">
                     <StackPanel Orientation="Vertical" Width="200" HorizontalAlignment="Left" Margin="5">
                     <Label Content="Connected Users:" Height="30" VerticalAlignment="Bottom" VerticalContentAlignment="Bottom"/>
-                        <DataGrid Height="170" Margin="5">
-
-                        </DataGrid>
-                        <Button Content="Drop" Width="50" HorizontalAlignment="Right" Margin="0,0,5,0"/>
+                        <ListBox Height="170" Margin="5" ItemsSource="{Binding Users, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedUser}"></ListBox>
+                        <Button Content="Drop" Width="50" HorizontalAlignment="Right" Margin="0,0,5,0" Command="{Binding DropBtnClickedCommand}" />
                     </StackPanel>
                     <StackPanel Orientation="Vertical" Width="250" HorizontalAlignment="Left" Margin="5">
                         <StackPanel Orientation="Horizontal">
                             <Label Content="Received Messages:" Height="30" VerticalAlignment="Bottom" VerticalContentAlignment="Bottom"/>
-                            <Label Content="3" Height="30" VerticalAlignment="Bottom" VerticalContentAlignment="Bottom"/>
+                            <Label  Height="30" VerticalAlignment="Bottom" VerticalContentAlignment="Bottom" Content="{Binding NumberOfRecMessages, Mode=OneWay}"/>
                         </StackPanel>
-                        <DataGrid Height="170" Margin="5">
-
-                        </DataGrid>
+                        <ListBox Height="170" Margin="5" ItemsSource="{Binding Messages}"></ListBox>
                         <Button Content="Save to log" Margin="5,0,5,0"/>
                     </StackPanel>
                 </StackPanel>
